@@ -6,7 +6,7 @@
 /*   By: tnave <tnave@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:56:34 by tnave             #+#    #+#             */
-/*   Updated: 2021/10/10 19:30:24 by tnave            ###   ########.fr       */
+/*   Updated: 2021/10/11 13:31:11 by tnave            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,14 @@ void	ft_check_access(int ac, char **av, t_utils *utils)
 	{
 		ft_check_access_two(av, i, j, utils);
 		utils->cmd_ok = 0;
-		// utils->bol = 0;
-		// i = 0;
-		// j++;
-		// utils->jp++;
-
+		utils->wrong_cmd = 0;
+		j++;
 	}
 }
 
 void	ft_check_access_two(char **av, int i, int j, t_utils *utils)
 {
-	while (utils->parse_env[i] && !utils->cmd_ok)
+	while (utils->parse_env && utils->parse_env[i] && !utils->cmd_ok)
 	{
 		utils->temp = ft_split(av[j], ' ');
 		utils->join = ft_strjoin_three(utils->parse_env[i], "/", utils->temp[0]);
@@ -63,10 +60,10 @@ void	ft_check_access_two(char **av, int i, int j, t_utils *utils)
 		}
 		else
 		{
-			if (utils->bol == 0)
+			if (utils->wrong_cmd == 0)
 			{
-				utils->cmd_tmp = ft_strdup(utils->temp[0]);
-				utils->bol = 1;
+				utils->error_msg = ft_strdup(utils->temp[0]);
+				utils->wrong_cmd = 1;
 			}
 			free_split(utils->temp);
 			utils->temp = NULL;
@@ -79,17 +76,17 @@ void	ft_check_access_two(char **av, int i, int j, t_utils *utils)
 		utils->temp =ft_split(av[j], ' ');
 		ft_lstadd_back(&utils->lst, ft_lstnew(utils->temp, NULL));
 		if (j > 2)
-			utils->iter = 0;
-		if (!utils->iter)
+			utils->invalid_fd = 0;
+		if (!utils->invalid_fd)
 		{
 			write(2, "bash: ", 6);
-			write(2, utils->cmd_tmp, ft_strlen(utils->cmd_tmp));
+			write(2, utils->error_msg, ft_strlen(utils->error_msg));
 			write(2, ": Command not found\n", 20);
-			free(utils->cmd_tmp);
+			free(utils->error_msg);
 		}
 		else
-			free(utils->cmd_tmp);
+			free(utils->error_msg);
 	}
 	else
-		free(utils->cmd_tmp);
+		free(utils->error_msg);
 }

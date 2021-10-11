@@ -6,7 +6,7 @@
 /*   By: tnave <tnave@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:42:34 by tnave             #+#    #+#             */
-/*   Updated: 2021/10/10 19:23:50 by tnave            ###   ########.fr       */
+/*   Updated: 2021/10/11 13:08:07 by tnave            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,18 @@ typedef struct s_utils_list
 
 typedef struct s_utils
 {
-	int			fd_one;
-	int			fd_two;
-	int			invalid_fd;
-	char 		**parse_env;
-	int			cmd_ok;
-	char		*join;
-	char		**temp;
+	int					fd_one;
+	int					fd_two;
+	int					invalid_fd;
+	char 				**parse_env;
+	int					cmd_ok;
+	char				*join;
+	char				**temp;
+	int					p;
+	int					wrong_cmd;
+	char				*error_msg;
+	t_utils_list 		*lst;
+
 
 }	t_utils;
 
@@ -65,7 +70,7 @@ char			*ft_strjoin(char *s1, char *s2);
 
 size_t			ft_strlen(const char *str);
 
-void			ft_check_access(t_utils *utils, int argc, char **argv);
+void			ft_check_access(int ac, char **av, t_utils *utils);
 
 void			parse_cmd(int argc, char **argv, t_utils *utils);
 
@@ -82,7 +87,7 @@ void			ft_lstclear(t_utils_list **lst, void (*del)(void *));
 void			ft_error(int i, char *str, t_utils *utils);
 void			add_opt(t_utils *utils);
 
-void			opt_exec(t_utils *utils, char **argv, char **environ, int ac);
+void			opt_exec(int ac, char **av, char **environ, t_utils *utils);
 
 void			pipe_in(int pfd[2], t_utils *utils,
 					 char **argv, char **environ);
@@ -90,12 +95,14 @@ void			pipe_in(int pfd[2], t_utils *utils,
 void			pipe_out(int pfd[2], t_utils *utils,
 					 char **argv, char **environ);
 
-void			exit_function(int i, t_utils *utils);
+void			exit_function(t_utils *utils);
 
-void			ft_check_acces_two(char **av, int i, int j, t_utils *utils);
+void			ft_check_access_two(char **av, int i, int j, t_utils *utils);
 
 void			assign_error(t_utils *utils);
 
 void			ft_free(char **ptr);
+
+void			show_error(char *str);
 
 #endif
