@@ -6,7 +6,7 @@
 /*   By: tnave <tnave@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/11 11:38:46 by tnave             #+#    #+#             */
-/*   Updated: 2021/10/11 11:38:46 by tnave            ###   ########.fr       */
+/*   Updated: 2021/10/11 17:31:16 by tnave            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,20 @@ void	ft_lstadd_back(t_utils_list **alst, t_utils_list *new)
 
 	if (!alst || !new)
 		return ;
+	new->next = NULL;
 	if (*alst)
 	{
 		end_list = *alst;
 		while (end_list->next != NULL)
 			end_list = end_list->next;
 		end_list->next = new;
+		new->prev = end_list;
 	}
 	else
+	{
+		new->prev = NULL;
 		*alst = new;
+	}
 }
 
 void	ft_lstclear(t_utils_list **lst, void (*del)(void *))

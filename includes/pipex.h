@@ -6,7 +6,7 @@
 /*   By: tnave <tnave@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:42:34 by tnave             #+#    #+#             */
-/*   Updated: 2021/10/11 13:08:07 by tnave            ###   ########.fr       */
+/*   Updated: 2021/10/11 17:59:57 by tnave            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,17 @@
 # include <signal.h>
 # include <memory.h>
 
+# define STDIN 0
+# define STDOUT 1
+
 typedef struct s_utils_list
 {
 	char				*cmd;
 	char				**cmd_opt;
 	char				*path;
+	int					pfd[2];
+
+	struct s_utils_list	*prev;
 	struct s_utils_list	*next;
 
 }	t_utils_list;
@@ -46,7 +52,6 @@ typedef struct s_utils
 	int					wrong_cmd;
 	char				*error_msg;
 	t_utils_list 		*lst;
-
 
 }	t_utils;
 
@@ -87,7 +92,7 @@ void			ft_lstclear(t_utils_list **lst, void (*del)(void *));
 void			ft_error(int i, char *str, t_utils *utils);
 void			add_opt(t_utils *utils);
 
-void			opt_exec(int ac, char **av, char **environ, t_utils *utils);
+void			opt_exec(char **av, char **environ, t_utils *utils, t_utils_list *tmp);
 
 void			pipe_in(int pfd[2], t_utils *utils,
 					 char **argv, char **environ);
