@@ -6,7 +6,7 @@
 /*   By: tnave <tnave@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:56:34 by tnave             #+#    #+#             */
-/*   Updated: 2021/10/11 17:28:46 by tnave            ###   ########.fr       */
+/*   Updated: 2021/10/12 13:15:21 by tnave            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	ft_check_access_two(char **av, int i, int j, t_utils *utils)
 			ft_lstadd_back(&utils->lst, ft_lstnew(utils->temp,
 				ft_strdup(utils->join)));
 			utils->cmd_ok = 1;
-			// utils->p++;
 		}
 		else
 		{

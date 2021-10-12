@@ -6,7 +6,7 @@
 /*   By: tnave <tnave@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/11 11:38:46 by tnave             #+#    #+#             */
-/*   Updated: 2021/10/11 17:31:16 by tnave            ###   ########.fr       */
+/*   Updated: 2021/10/12 13:19:52 by tnave            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 void	ft_lstadd_back(t_utils_list **alst, t_utils_list *new)
 {
-	t_utils_list	*end_list;
+	t_utils_list	*tmp;
 
 	if (!alst || !new)
 		return ;
 	new->next = NULL;
 	if (*alst)
 	{
-		end_list = *alst;
-		while (end_list->next != NULL)
-			end_list = end_list->next;
-		end_list->next = new;
-		new->prev = end_list;
+		tmp = *alst;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+		new->prev = tmp;
 	}
 	else
 	{

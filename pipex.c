@@ -6,7 +6,7 @@
 /*   By: tnave <tnave@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:39:18 by tnave             #+#    #+#             */
-/*   Updated: 2021/10/11 17:59:57 by tnave            ###   ########.fr       */
+/*   Updated: 2021/10/12 14:17:03 by tnave            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	fd_exist(char **av, int ac, t_utils *utils)
 {
-	(void)ac;
 	utils->fd_one = open(av[1], O_RDONLY);
 	utils->fd_two = open(av[ac - 1], O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU
 		| S_IRGRP | S_IROTH);
@@ -36,8 +35,6 @@ void	opt_exec(char **av, char **environ, t_utils *utils, t_utils_list *tmp)
 	pid = fork();
 	if (pid < 0)
 		ft_error(0, strerror(errno), utils);
-	// if (ft_strncmp(av[1], "dev/urandom", 12) == 0)
-	// 	close(tmp->pfd[0]);
 	if (pid == 0)
 	{
 		if (!tmp->prev)
@@ -48,15 +45,17 @@ void	opt_exec(char **av, char **environ, t_utils *utils, t_utils_list *tmp)
 			dup2(tmp->pfd[STDOUT], STDOUT);
 		else
 			dup2(utils->fd_two, STDOUT);
+		if (ft_strncmp(av[1], "/dev/urandom", 16) == 0)
+			close(tmp->prev->pfd[STDIN]);
 		execve(tmp->path, tmp->cmd_opt, environ);
 		exit(127);
 	}
-	else
+	else // pid > 0
 	{
 		waitpid(pid, NULL, 0);
 		if (tmp->prev)
-			close(tmp->prev->pfd[0]);
-		close(tmp->pfd[1]);
+			close(tmp->prev->pfd[STDIN]);
+		close(tmp->pfd[STDOUT]);
 		if (!tmp->next)
 			exit(0);
 	}
@@ -69,7 +68,7 @@ int	main(int ac, char **av, char **environ)
 
 	ft_memset(&utils, 0, sizeof(t_utils));
 	if (ac >= 5)
-	{	// ft_error(0, "Missing arguments", &utils);
+	{
 		if (!parse_env(environ, &utils))
 			ft_error(0, "Path not found", &utils);
 		fd_exist(av, ac, &utils);
