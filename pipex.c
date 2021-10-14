@@ -6,7 +6,7 @@
 /*   By: tnave <tnave@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:39:18 by tnave             #+#    #+#             */
-/*   Updated: 2021/10/14 17:22:13 by tnave            ###   ########.fr       */
+/*   Updated: 2021/10/14 17:24:21 by tnave            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ int	main(int ac, char **av, char **environ)
 		{
 			if (tmp->next)
 			{
-				printf("lol\n");
 				if (pipe(tmp->pfd) == -1)
 					ft_error(0, strerror(errno), &utils);
 			}
