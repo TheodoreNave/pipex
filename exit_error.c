@@ -6,7 +6,7 @@
 /*   By: tnave <tnave@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/11 11:38:55 by tnave             #+#    #+#             */
-/*   Updated: 2021/10/11 13:09:55 by tnave            ###   ########.fr       */
+/*   Updated: 2021/10/14 15:50:09 by tnave            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	exit_function(t_utils *utils)
 		ft_lstclear(&utils->lst, free);
 		utils->lst = NULL;
 	}
-	exit(0);
+	// exit(127);
 }
 
 // void	show_error(char *str)
