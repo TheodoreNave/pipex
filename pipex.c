@@ -6,7 +6,7 @@
 /*   By: tnave <tnave@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:39:18 by tnave             #+#    #+#             */
-/*   Updated: 2021/10/14 17:24:21 by tnave            ###   ########.fr       */
+/*   Updated: 2021/10/14 17:28:30 by tnave            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	opt_exec(char **av, char **environ, t_utils *utils, t_utils_list *tmp)
 		if (ft_strncmp(av[1], "/dev/urandom", 16) == 0)
 			close(tmp->prev->pfd[STDIN]);
 		execve(tmp->path, tmp->cmd_opt, environ);
-		exit_function(utils);
 		exit(127);
 	}
 	else // pid > 0
@@ -59,7 +58,7 @@ void	opt_exec(char **av, char **environ, t_utils *utils, t_utils_list *tmp)
 		if (tmp->next)
 			close(tmp->pfd[STDOUT]);
 		if (!tmp->next)
-			exit(0);
+			exit_function(utils);
 	}
 }
 
