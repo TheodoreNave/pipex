@@ -6,7 +6,7 @@
 /*   By: tnave <tnave@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:39:18 by tnave             #+#    #+#             */
-/*   Updated: 2021/10/14 17:28:30 by tnave            ###   ########.fr       */
+/*   Updated: 2021/10/15 15:39:08 by tnave            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	fd_exist(char **av, int ac, t_utils *utils)
 {
 	utils->fd_one = open(av[1], O_RDONLY);
 	utils->fd_two = open(av[ac - 1], O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU
-		| S_IRGRP | S_IROTH);
+			| S_IRGRP | S_IROTH);
 	if (utils->fd_one < 0)
 	{
 		write(2, "bash: ", 6);
@@ -29,7 +29,6 @@ void	fd_exist(char **av, int ac, t_utils *utils)
 
 void	opt_exec(char **av, char **environ, t_utils *utils, t_utils_list *tmp)
 {
-	(void)av;
 	pid_t	pid;
 
 	pid = fork();
@@ -50,22 +49,25 @@ void	opt_exec(char **av, char **environ, t_utils *utils, t_utils_list *tmp)
 		execve(tmp->path, tmp->cmd_opt, environ);
 		exit(127);
 	}
-	else // pid > 0
-	{
-		waitpid(pid, NULL, 0);
-		if (tmp->prev)
-			close(tmp->prev->pfd[STDIN]);
-		if (tmp->next)
-			close(tmp->pfd[STDOUT]);
-		if (!tmp->next)
-			exit_function(utils);
-	}
+	else
+		child(pid, utils, tmp);
+}
+
+void	child(pid_t pid, t_utils *utils, t_utils_list *tmp)
+{
+	waitpid(pid, NULL, 0);
+	if (tmp->prev)
+		close(tmp->prev->pfd[STDIN]);
+	if (tmp->next)
+		close(tmp->pfd[STDOUT]);
+	if (!tmp->next)
+		exit_function(utils);
 }
 
 int	main(int ac, char **av, char **environ)
 {
-	t_utils		utils;
-	t_utils_list *tmp;
+	t_utils			utils;
+	t_utils_list	*tmp;
 
 	ft_memset(&utils, 0, sizeof(t_utils));
 	if (ac >= 5)

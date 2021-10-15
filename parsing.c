@@ -6,7 +6,7 @@
 /*   By: tnave <tnave@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:56:34 by tnave             #+#    #+#             */
-/*   Updated: 2021/10/12 13:15:21 by tnave            ###   ########.fr       */
+/*   Updated: 2021/10/15 15:35:17 by tnave            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	parse_env(char **env, t_utils *utils)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (env[i])
@@ -31,8 +31,8 @@ int	parse_env(char **env, t_utils *utils)
 
 void	ft_check_access(int ac, char **av, t_utils *utils)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 2;
@@ -50,11 +50,12 @@ void	ft_check_access_two(char **av, int i, int j, t_utils *utils)
 	while (utils->parse_env && utils->parse_env[i] && !utils->cmd_ok)
 	{
 		utils->temp = ft_split(av[j], ' ');
-		utils->join = ft_strjoin_three(utils->parse_env[i], "/", utils->temp[0]);
+		utils->join = ft_strjoin_three(utils->parse_env[i],
+				"/", utils->temp[0]);
 		if (access(utils->join, F_OK) == 0)
 		{
 			ft_lstadd_back(&utils->lst, ft_lstnew(utils->temp,
-				ft_strdup(utils->join)));
+					ft_strdup(utils->join)));
 			utils->cmd_ok = 1;
 		}
 		else
@@ -70,6 +71,20 @@ void	ft_check_access_two(char **av, int i, int j, t_utils *utils)
 		free(utils->join);
 		i++;
 	}
+	utils_cmd_ok(av, j, utils);
+}
+
+void	error_msg(t_utils *utils)
+{
+	if (utils->error_msg)
+	{
+		free(utils->error_msg);
+		utils->error_msg = NULL;
+	}
+}
+
+void	utils_cmd_ok(char **av, int j, t_utils *utils)
+{
 	if (!utils->cmd_ok)
 	{
 		utils->temp = ft_split(av[j], ' ');
@@ -84,8 +99,8 @@ void	ft_check_access_two(char **av, int i, int j, t_utils *utils)
 			free(utils->error_msg);
 		}
 		else
-			free(utils->error_msg);
+			error_msg(utils);
 	}
 	else
-		free(utils->error_msg);
+		error_msg(utils);
 }

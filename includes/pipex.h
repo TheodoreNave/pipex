@@ -6,7 +6,7 @@
 /*   By: tnave <tnave@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:42:34 by tnave             #+#    #+#             */
-/*   Updated: 2021/10/11 17:59:57 by tnave            ###   ########.fr       */
+/*   Updated: 2021/10/15 15:40:42 by tnave            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ typedef struct s_utils
 	int					fd_one;
 	int					fd_two;
 	int					invalid_fd;
-	char 				**parse_env;
+	char				**parse_env;
 	int					cmd_ok;
 	char				*join;
 	char				**temp;
 	int					p;
 	int					wrong_cmd;
 	char				*error_msg;
-	t_utils_list 		*lst;
+	t_utils_list		*lst;
 
 }	t_utils;
 
@@ -92,7 +92,8 @@ void			ft_lstclear(t_utils_list **lst, void (*del)(void *));
 void			ft_error(int i, char *str, t_utils *utils);
 void			add_opt(t_utils *utils);
 
-void			opt_exec(char **av, char **environ, t_utils *utils, t_utils_list *tmp);
+void			opt_exec(char **av, char **environ,
+					t_utils *utils, t_utils_list *tmp);
 
 void			pipe_in(int pfd[2], t_utils *utils,
 					 char **argv, char **environ);
@@ -109,5 +110,11 @@ void			assign_error(t_utils *utils);
 void			ft_free(char **ptr);
 
 void			show_error(char *str);
+
+void			error_msg(t_utils *utils);
+
+void			utils_cmd_ok(char **av, int j, t_utils *utils);
+
+void			child(pid_t pid, t_utils *utils, t_utils_list *tmp);
 
 #endif
